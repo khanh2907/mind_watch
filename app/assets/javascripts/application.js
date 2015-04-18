@@ -22,7 +22,7 @@
 //= require justgage
 //= require_tree .
 
-var eegPowerKeys = ["delta", "theta", "lowAlpha", "highAlpha", "lowBeta", "highBeta", "lowGamma", "highGamma"];
+var eegPowerKeys = ["theta", "lowAlpha", "highAlpha", "lowBeta", "highBeta", "lowGamma", "highGamma"];
 
 function FacebookPhoto (id, url) {
 		this.id = id;
@@ -34,7 +34,7 @@ function FacebookPhoto (id, url) {
 		this.averageMeditation = 0;
 
 		this.calculateAverages = function () {
-			var totals = {"delta": 0, "theta": 0, "lowAlpha": 0, "highAlpha": 0, "lowBeta": 0, "highBeta": 0, "lowGamma": 0, "highGamma": 0, "attention": 0,"meditation": 0};
+			var totals = {"theta": 0, "lowAlpha": 0, "highAlpha": 0, "lowBeta": 0, "highBeta": 0, "lowGamma": 0, "highGamma": 0, "attention": 0,"meditation": 0};
 			this.eegData.forEach(function(data) {
 				if (typeof data.eSense != 'undefined') {
 					totals['attention'] += data.eSense.attention;

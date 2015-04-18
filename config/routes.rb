@@ -6,5 +6,5 @@ Rails.application.routes.draw do
 	end
   resources :users
 
-  get 'rate_stuff', :to => 'rate#facebook_photos', :as => :rate_facebook_photos
+  get 'rate/fbphotos', :to => 'rate#facebook_photos', :as => :rate_facebook_photos
 end

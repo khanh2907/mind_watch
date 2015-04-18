@@ -5,6 +5,12 @@
 	<div class="row centerize">
 		<h1>Mind Rate</h1>
 
+		<a class="btn btn-default" href="<%= root_path %>">MindWave Reader</a>
+		<a class="btn btn-default" href="<%= rate_facebook_photos_path %>">Rate Facebook Photos</a>
+		<a class="btn btn-default" href="<%= rate_facebook_photos_path %>">Rate YouTube Video</a>
+
+		<hr>
+		<h2>MindWave Reader</h2>
 		<div id="mindwave-warning" class="alert alert-warning" role="alert">
 			Please put on your Mindwave!
 		</div>
@@ -29,9 +35,6 @@
 		</div>
 	</div>
 
-	<div class="row centerize">
-		<a class="btn btn-primary btn-lg" href="<%= rate_facebook_photos_path %>">Rate Facebook Photos</a>
-	</div>
 </div>
 
 <script>
@@ -129,4 +132,15 @@
 	  };
 	});
 </script>
+
+<% else %>
+<div class="container">
+	<div class="row centerize">
+		<h1 class="home_title">Mind Rate</h1>
+		<hr>
+		<%= link_to user_omniauth_authorize_path(:facebook) do %>
+			<btn class="btn btn-lg btn-primary btn-fb"><%= fa_icon "facebook-square" %> Login with Facebook</btn>
+		<% end %>
+	</div>
+</div>
 <% end %>

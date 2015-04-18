@@ -3,46 +3,66 @@
 <% end %>
 
 <div class="container">
+	<div class="row centerize" id="header">
+		<h1>Mind Rate</h1>
+
+		<a class="btn btn-default" href="<%= root_path %>">MindWave Reader</a>
+		<a class="btn btn-default" href="<%= rate_facebook_photos_path %>">Rate Facebook Photos</a>
+		<a class="btn btn-default" href="<%= rate_facebook_photos_path %>">Rate YouTube Video</a>
+
+		<hr>
+
+	</div>
 	<div class="row centerize" id="intro-div">
-		<h1>Rate Facebook Photos</h1>
+		<h2>Rate Facebook Photos</h2>
 		<p>Find out what your brain waves look like when you're looking at embarassing photos you've uploaded to Facebook!</p>
 		
 		<div id="mindwave-warning" class="alert alert-warning" role="alert">
 			Please put on your Mindwave on start!
 		</div>
-		<a class="btn btn-primary btn-lg" id="rate-fb-start" >Start</a>
+		<a class="btn btn-primary btn-lg" id="rate-fb-start" disabled>Start</a>
 	</div>
 
 	<div class="row centerize" id="rater-div">
-		<img id="photo-img" src=""/>
+			<img id="photo-img" src="" class="thumbnail"/>
 	</div>
 
 	<div class="row" id="results-div" style="display:none;">
 		<div class="row centerize">
-			<h1>Results</h1>
+			<h2>Results</h2>
+			<hr>
 		</div>
 		<% @photos.each_with_index do |photo, index| %>
 		<div class="row result" id="<%= index %>">
 			<div class="row">
-				<%= image_tag photo, class: "fb-result-photo thumbnail" %>
-			</div>
-			<div class="row">
-				<div class="col-md-2">
-					<div id="attentionGauge-<%= index %>" class="200x160px"></div>
-				</div>
-
-				<div class="col-md-2">
-					<div id="meditationGauge-<%= index %>" class="200x160px"></div>
-				</div>
-
 				<div class="col-md-4">
-					<canvas id="eegRadarChart-<%= index %>" class="eegRadarChart" width="400" height="400"></canvas>
+					<%= image_tag photo, class: "fb-result-photo thumbnail" %>
 				</div>
-				<div class="col-md-4">
-					<canvas id="eegBarChart-<%= index %>" width="400" height="400"></canvas>
-				</div>
-			</div>
 
+				<div class="col-md-8">
+					<div class="row">
+						<div class="col-md-4">
+							<div id="attentionGauge-<%= index %>"></div>
+						</div>
+						<div class="col-md-4">
+							<div id="meditationGauge-<%= index %>"></div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<canvas id="eegRadarChart-<%= index %>" class="eegRadarChart" ></canvas>
+						</div>
+						<div class="col-md-4">
+							<canvas id="eegBarChart-<%= index %>" ></canvas>
+						</div>
+					</div>
+				</div>
+
+				<div class="row" id="analysis-<%= index %>">
+
+				</div>
+				
+			</div>
 			<hr>
 		</div>
 			
@@ -54,7 +74,7 @@
 	$(document).ready(function(){
 
 		var DATA = {
-			labels: ["Delta", "Theta", "Low Alpha", "High Alpha", "Low Beta", "High Beta", "Low Gamma", "High Gamma"],
+			labels: ["Theta", "Low Alpha", "High Alpha", "Low Beta", "High Beta", "Low Gamma", "High Gamma"],
 			datasets: [{
 				label: "Mindwave Data Bar",
 				fillColor: "rgba(220,220,220,0.2)",
@@ -67,8 +87,7 @@
 		};
 
 		var photosJSON = JSON.parse(window.photos);
-		// var numPhotos = photosJSON.length;
-		var numPhotos = 3;
+		var numPhotos = photosJSON.length;
 		var fbPhotos = [];
 		var currentPhotoIndex = 0;
 		var currentPhoto = null;
@@ -77,6 +96,7 @@
 
 		$('#rate-fb-start').on('click', function() {
 			$('#intro-div').hide()
+			$('#header').hide()
 			$('#rater-div').show()
 			loadNextFbPhoto();
 			ticker = setInterval(tickRate, 1000);
@@ -102,6 +122,7 @@
 				currentPhoto = null;
 				$('#rater-div').hide();
 				$('#results-div').show();
+				$('#header').show()
 				processResults();
 			}
 		}

@@ -40,7 +40,6 @@ class User < ActiveRecord::Base
 
   def get_photos
     facebook = Koala::Facebook::API.new(fb_token)
-    facebook.get_connections("me", "photos?limit=15&offset=#{rand(0..300)}").map{|i| i['images'][1]['source']}.shuffle
+    facebook.get_connections("me", "photos?limit=2&offset=#{rand(0..300)}").map{|i| i['images'][1]['source']}.shuffle
   end
-
 end

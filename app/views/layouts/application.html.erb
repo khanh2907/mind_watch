@@ -9,11 +9,10 @@
     <%= csrf_meta_tags %>
   </head>
   <body>
-    <header>
-      <%= render 'layouts/navigation' %>
-    </header>
+    <% if user_signed_in? %>
+    <%= link_to 'Logout', destroy_user_session_path, class: 'btn btn-default btn-logout' %>
+    <% end %>
     <main role="main">
-       <%= render 'layouts/messages' %>
        <%= yield %>
     </main>
   </body>

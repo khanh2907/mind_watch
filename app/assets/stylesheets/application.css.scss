@@ -20,11 +20,35 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
+@font-face {
+    font-family: MANIFESTO;
+    src: url(MANIFESTO.ttf);
+}
+
 body {
   font-size: 14px;
   line-height: 20px;
-  font-family: 'Benton', 'Tahoma', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'OpenSans', 'Tahoma', 'Helvetica', 'Arial', sans-serif;
   color: #1b1b1b;
+}
+
+h1, h2 {
+  font-family: 'MANIFESTO';
+}
+
+.home_title {
+  font-family: 'MANIFESTO';
+  font-size: 100px;
+  margin-top: 20%;
+}
+
+.btn-fb {
+  background-color: #4c69ba;
+}
+
+.btn-logout {
+  margin: 4px;
+  float: right;
 }
 
 .well, .btn, .form-control{
@@ -76,4 +100,14 @@ main {
 li.form-error {
   color: darkred;
   list-style-type: none;
+}
+
+.fb-result-photo {
+  width: 100%; 
+}
+
+#photo-img {
+  margin-top: 5% ;
+  min-height: 300px;
+  max-height: 450px;
 }
