@@ -7,7 +7,7 @@
 
 		<a class="btn btn-default" href="<%= root_path %>">MindWave Reader</a>
 		<a class="btn btn-default" href="<%= rate_facebook_photos_path %>">Rate Facebook Photos</a>
-		<a class="btn btn-default" href="<%= rate_facebook_photos_path %>">Rate YouTube Video</a>
+		<a class="btn btn-default" href="<%= rate_youtube_path %>">Rate YouTube Video</a>
 
 		<hr>
 		<h2>MindWave Reader</h2>
@@ -136,7 +136,9 @@
 <% else %>
 <div class="container">
 	<div class="row centerize">
+		<%= image_tag '/large_logo.png', class: 'large-logo' %>
 		<h1 class="home_title">Mind Rate</h1>
+		<i>Look at pictures and videos with a weird thing on your head that does brain magic.</i>
 		<hr>
 		<%= link_to user_omniauth_authorize_path(:facebook) do %>
 			<btn class="btn btn-lg btn-primary btn-fb"><%= fa_icon "facebook-square" %> Login with Facebook</btn>

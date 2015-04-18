@@ -36,10 +36,15 @@ h1, h2 {
   font-family: 'MANIFESTO';
 }
 
+.large-logo {
+  height: 300px;
+  padding-top: 50px;
+}
+
 .home_title {
   font-family: 'MANIFESTO';
   font-size: 100px;
-  margin-top: 20%;
+  /*margin-top: 20%;*/
 }
 
 .btn-fb {
@@ -110,4 +115,12 @@ li.form-error {
   margin-top: 5% ;
   min-height: 300px;
   max-height: 450px;
+}
+
+#yt_url_field {
+  width:350px;
+}
+
+form {
+  text-align: center;
 }

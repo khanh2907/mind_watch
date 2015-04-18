@@ -8,18 +8,43 @@
 
 		<a class="btn btn-default" href="<%= root_path %>">MindWave Reader</a>
 		<a class="btn btn-default" href="<%= rate_facebook_photos_path %>">Rate Facebook Photos</a>
-		<a class="btn btn-default" href="<%= rate_facebook_photos_path %>">Rate YouTube Video</a>
+		<a class="btn btn-default" href="<%= rate_youtube_path %>">Rate YouTube Video</a>
 
 		<hr>
 
 	</div>
 	<div class="row centerize" id="intro-div">
-		<h2>Rate Facebook Photos</h2>
-		<p>Find out what your brain waves look like when you're looking at embarassing photos you've uploaded to Facebook!</p>
-		
-		<div id="mindwave-warning" class="alert alert-warning" role="alert">
-			Please put on your Mindwave on start!
+		<div class="row">
+			<h2>Rate Facebook Photos</h2>
+			<p>Find out what your brain waves look like when you're looking at embarassing photos you've uploaded to Facebook!</p>
 		</div>
+
+		<div class="row">
+			<div class="col-md-4">
+				<div class="row">
+					<%= image_tag '/polaroid.png', height:250 %>
+				</div>
+				You will be given 5 random photos from your Facebook account.
+			</div>
+			<div class="col-md-4">
+				<div class="row">
+					<%= image_tag '/emotions.png', height:250 %>
+				</div>
+				View the photos as you usually would, try thinking of some of the memory and emotions of how you felt.
+				You only have will only have 10 seconds for each photo!
+			</div>
+			<div class="col-md-4">
+				<div class="row">
+					<%= image_tag '/report.png', height:250 %>
+				</div>
+				After 5 photos have been seen, you will be given a report based on your EEG data collected from the MindWave.
+			</div>
+		</div>
+		<br>
+		<div id="mindwave-warning" class="alert alert-warning" role="alert">
+				Please put on your Mindwave on start!
+			</div>
+		
 		<a class="btn btn-primary btn-lg" id="rate-fb-start" disabled>Start</a>
 	</div>
 
@@ -58,7 +83,7 @@
 					</div>
 				</div>
 
-				<div class="row" id="analysis-<%= index %>">
+				<div class="row centerize" id="analysis-<%= index %>">
 
 				</div>
 				
@@ -85,6 +110,8 @@
 				pointHighlightStroke: "rgba(220,220,220,1)"
 			}]
 		};
+
+		var eegPowerKeys = ["theta", "lowAlpha", "highAlpha", "lowBeta", "highBeta", "lowGamma", "highGamma"];
 
 		var photosJSON = JSON.parse(window.photos);
 		var numPhotos = photosJSON.length;
@@ -147,7 +174,6 @@
 				var eegBarChartCtx = document.getElementById("eegBarChart-"+fbP.id).getContext("2d");
 				var eegBarChart = new Chart(eegBarChartCtx).Bar(thisEegData);
 
-
 				var attentionGauge = new JustGage({
 			    id: "attentionGauge-"+fbP.id,
 			    value: fbP.averageAttention,
@@ -163,6 +189,24 @@
 			    max: 100,
 			    title: "Meditation Level"
 			  });
+
+			  var indexOfGreatest = fbP.averages.indexOf(Math.max.apply(Math, fbP.averages));
+			  var greatestBand = eegPowerKeys[indexOfGreatest];
+
+			  var analysis = '';
+
+			  if (greatestBand == 'theta') {
+			  	analysis = 'You showed some signs emotional stress, frustration or disappointment.';
+			  } else if (greatestBand == 'lowAlpha' || greatestBand == 'highAlpha') {
+			  	analysis = 'You asserted relax awareness.';
+			  } else if (greatestBand == 'lowBeta' || greatestBand == 'highBeta') {
+			  	analysis = 'You were focused and/or actively thinking.';
+			  } else if (greatestBand == 'lowGamma' || greatestBand == 'highGamma') {
+			  	analysis = '';
+			  }
+
+			  $("#analysis-"+fbP.id).html(analysis);
+
 			});
 		}
 

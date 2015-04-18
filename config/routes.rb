@@ -6,5 +6,8 @@ Rails.application.routes.draw do
 	end
   resources :users
 
-  get 'rate/fbphotos', :to => 'rate#facebook_photos', :as => :rate_facebook_photos
+  get 'fbphotos', :to => 'rate#facebook_photos', :as => :rate_facebook_photos
+  get 'youtube', :to => 'rate#youtube', :as => :rate_youtube
+
+  post 'yt_videos', :to => 'rate#youtube_videos', :as => :yt_videos
 end

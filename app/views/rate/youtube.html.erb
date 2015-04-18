@@ -1,0 +1,34 @@
+<%= javascript_tag do %>
+	window.photos = '<%= raw @photosString %>';
+<% end %>
+
+<div class="container">
+	<div class="row centerize" id="header">
+		<h1>Mind Rate</h1>
+
+		<a class="btn btn-default" href="<%= root_path %>">MindWave Reader</a>
+		<a class="btn btn-default" href="<%= rate_facebook_photos_path %>">Rate Facebook Photos</a>
+		<a class="btn btn-default" href="<%= rate_youtube_path %>">Rate YouTube Video</a>
+
+		<hr>
+
+	</div>
+	<div class="row centerize" id="intro-div">
+		<h2>Rate YouTube Video</h2>
+
+		<%= simple_form_for(@youtube_video) do |f| %>
+			<%= f.text_field :url, id: 'yt_url_field', placeholder: 'Enter a YouTube URL' %>
+			<br>
+			<br>
+			<%= f.submit 'Watch', class: 'btn btn-primary btn-lg' %>
+		<% end %>
+	</div>
+
+</div>
+
+<script>
+	$(document).ready(function(){
+
+		
+	});
+</script>
