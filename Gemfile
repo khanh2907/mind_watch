@@ -24,6 +24,7 @@ gem 'omniauth-facebook'
 gem 'em-websocket'
 gem 'chart-js-rails'
 gem 'justgage-rails'
+gem 'auto_html'
 
 group :development do
   gem 'better_errors'

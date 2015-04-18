@@ -4,31 +4,97 @@
 
 <div class="container">
 	<div class="row centerize" id="header">
-		<h1>Mind Rate</h1>
+		<h1>Mind Watch</h1>
 
 		<a class="btn btn-default" href="<%= root_path %>">MindWave Reader</a>
-		<a class="btn btn-default" href="<%= rate_facebook_photos_path %>">Rate Facebook Photos</a>
-		<a class="btn btn-default" href="<%= rate_youtube_path %>">Rate YouTube Video</a>
+		<a class="btn btn-default" href="<%= rate_facebook_photos_path %>">View Facebook Photos</a>
+		<a class="btn btn-default" href="<%= rate_youtube_path %>">Watch YouTube Video</a>
 
 		<hr>
 
 	</div>
 	<div class="row centerize" id="intro-div">
-		<h2>Rate YouTube Video</h2>
+		<h2>Watch YouTube Video</h2>
 
+		<div class="row">
+			<div class="col-md-4">
+				<div class="row">
+					<%= image_tag '/youtube.png', height:250 %>
+				</div>
+				Enter a URL to a YouTube video that you want to watch.
+			</div>
+			<div class="col-md-4">
+				<div class="row">
+					<%= image_tag '/emotions.png', height:250 %>
+				</div>
+				Enjoy the video as you normally would. Dance to some Taylor Swift.
+			</div>
+			<div class="col-md-4">
+				<div class="row">
+					<%= image_tag '/report.png', height:250 %>
+				</div>
+				After the video is done, you'll be able to watch the video again with a playback of your MindWave EEG data.
+			</div>
+		</div>
+		<br>
+
+		<div id="mindwave-warning" class="alert alert-warning" role="alert">
+			Please put on your Mindwave before continuing!
+		</div>
 		<%= simple_form_for(@youtube_video) do |f| %>
 			<%= f.text_field :url, id: 'yt_url_field', placeholder: 'Enter a YouTube URL' %>
 			<br>
 			<br>
-			<%= f.submit 'Watch', class: 'btn btn-primary btn-lg' %>
+			<%= f.submit 'Watch', class: 'btn btn-primary btn-lg', disabled: 'disabled', id: 'watch-btn' %>
 		<% end %>
+	</div>
+
+	<div class="row">
+		<hr>
+		<h3>Previous Videos</h3>
+
+		<table class="table">
+			<thead>
+				<th>Date</th>
+				<th>URL</th>
+			</thead>
+			<tbody>
+				<% @previous_videos.each do |vid| %>
+				<tr>
+					<td><%= vid.created_at.strftime('%d/%m/%Y')%></td>
+					<td><%= link_to vid.url, yt_replay_path(vid) %></td>
+				</tr>
+				<% end %>
+			</tbody>
+		</table>
+
+		
+
 	</div>
 
 </div>
 
 <script>
 	$(document).ready(function(){
+		ws = new WebSocket("ws://localhost:8080");
+	  ws.onmessage = function(evt) { 
 
-		
+	  	var data = JSON.parse(evt.data);
+
+	  	if (typeof data.poorSignalLevel != 'undefined') {
+	  		var strength = (200 - data.poorSignalLevel)/2;
+	  		if (strength == 0) {
+	  			$('#mindwave-warning').show();
+	  			$('#watch-btn').attr('disabled', true);
+	  		} else {
+	  			$('#mindwave-warning').hide();
+	  			$('#watch-btn').attr('disabled', false);
+	  		}
+	  	}
+	  };
+	  ws.onclose = function() { console.log("socket closed"); };
+	  ws.onopen = function() {
+	    console.log("connected...");
+	  };
 	});
 </script>

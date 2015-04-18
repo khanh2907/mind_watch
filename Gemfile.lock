@@ -29,6 +29,9 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.3.6)
     arel (5.0.1.20140414130214)
+    auto_html (1.6.4)
+      redcarpet (~> 3.1)
+      rinku (~> 1.5.0)
     bcrypt (3.1.9)
     better_errors (2.0.0)
       coderay (>= 1.0.0)
@@ -182,8 +185,10 @@ GEM
     raphael-rails (2.1.2)
     rdoc (4.1.2)
       json (~> 1.4)
+    redcarpet (3.2.3)
     responders (1.1.2)
       railties (>= 3.2, < 4.2)
+    rinku (1.5.1)
     rspec-core (3.1.7)
       rspec-support (~> 3.1.0)
     rspec-expectations (3.1.2)
@@ -251,6 +256,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  auto_html
   better_errors
   binding_of_caller
   bootstrap-sass

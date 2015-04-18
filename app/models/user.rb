@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
 
   def self.from_omniauth(auth)
 	  this_user = where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
-	    user.email = auth.info.email
+	    user.email = auth.info.email || 'test@example.com'
 	    user.name = auth.info.name 
 	  end
     this_user.fb_token = auth.credentials.token

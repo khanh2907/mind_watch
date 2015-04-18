@@ -1,0 +1,91 @@
+<%= javascript_tag do %>
+  window.yt_url = '<%= raw @youtube_video.url %>';
+<% end %>
+<div class="container">
+	<div class="row centerize" id="header">
+		<h1>Mind Watch</h1>
+
+    <a class="btn btn-default" href="<%= root_path %>">MindWave Reader</a>
+    <a class="btn btn-default" href="<%= rate_facebook_photos_path %>">View Facebook Photos</a>
+    <a class="btn btn-default" href="<%= rate_youtube_path %>">Watch YouTube Video</a>
+
+		<hr>
+
+	</div>
+	<div style="display:none;">
+		<%= simple_form_for(@youtube_video) do |f| %>
+      <%= f.input :eeg_data %>
+    <% end %>
+	</div>
+	<div id="player"></div>
+
+    <script>
+      var eegData = [];
+      var video_id = window.yt_url;
+      var ampersandPosition = video_id.indexOf('=');
+      if(ampersandPosition != -1) {
+        video_id = video_id.substring(ampersandPosition+1, video_id.length);
+      }
+
+      var tag = document.createElement('script');
+
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+      var player;
+      function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+          height: '500',
+          width: '1200',
+          videoId: video_id,
+          playerVars: { 'autoplay': 0, 'controls': 0 },
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }
+        });
+      }
+
+      function onPlayerReady(event) {
+        setupWsConnection();
+        event.target.playVideo();
+      }
+
+      function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.ENDED) {
+          // do the thing - form submit
+          var jsonString = JSON.stringify(eegData);
+          $('#yt_video_eeg_data').val(jsonString);
+          $('.edit_yt_video').submit();
+        }
+      }
+      function stopVideo() {
+        player.stopVideo();
+      }
+
+      function setupWsConnection() {
+        ws = new WebSocket("ws://localhost:8080");
+        ws.onmessage = function(evt) { 
+
+          var data = JSON.parse(evt.data);
+          if (typeof data.poorSignalLevel != 'undefined') {
+            var strength = (200 - data.poorSignalLevel)/2;
+            if (strength == 0) {
+              // do nothing
+            } else {
+              var time = player.getCurrentTime();
+              if (time != 0) {
+                data.currentTime = time;
+                eegData.push(data);
+              }
+            }
+          }
+        };
+        ws.onclose = function() { console.log("socket closed"); };
+        ws.onopen = function() {
+          console.log("connected...");
+        };
+      }
+    </script>
+</div>

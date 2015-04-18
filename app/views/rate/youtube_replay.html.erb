@@ -1,0 +1,145 @@
+<%= javascript_tag do %>
+	window.eegData = '<%= raw @youtube_video.eeg_data %>';
+	window.yt_url = '<%= raw @youtube_video.url %>';
+<% end %>
+
+<div class="container">
+	<div class="row centerize" id="header">
+		<h1>Mind Watch</h1>
+
+		<a class="btn btn-default" href="<%= root_path %>">MindWave Reader</a>
+		<a class="btn btn-default" href="<%= rate_facebook_photos_path %>">View Facebook Photos</a>
+		<a class="btn btn-default" href="<%= rate_youtube_path %>">Watch YouTube Video</a>
+
+		<hr>
+
+	</div>
+	<div class="row centerize" id="intro-div">
+		<h2>Video Results</h2>
+	</div>
+
+	<div class="row">
+		<div class="col-md-6">
+			<div id="player"></div>
+		</div>
+
+		<div class="col-md-6">
+			<div class="row">
+				<div class="col-md-6">
+					<div id="attentionGauge"></div>
+				</div>
+				<div class="col-md-6">
+					<div id="meditationGauge"></div>
+				</div>
+			</div>
+
+			<div class="row">
+				<canvas id="barChart" width="650" height="350"></canvas>
+			</div>
+		</div>
+
+		</div>
+		
+	</div>
+
+</div>
+
+<script>
+			var eegPowerKeys = ["theta", "lowAlpha", "highAlpha", "lowBeta", "highBeta", "lowGamma", "highGamma"];
+			var ticker = null;
+
+      var eegData = JSON.parse(window.eegData);
+
+      var currentPointIndex = 0;
+      
+      var data = {
+					labels: ["Theta", "Low Alpha", "High Alpha", "Low Beta", "High Beta", "Low Gamma", "High Gamma"],
+					datasets: [{
+						label: "Mindwave Data Bar",
+						fillColor: "rgba(220,220,220,0.2)",
+						strokeColor: "rgba(220,220,220,1)",
+						pointColor: "rgba(220,220,220,1)",
+						pointStrokeColor: "#fff",
+						pointHighlightFill: "#fff",
+						pointHighlightStroke: "rgba(220,220,220,1)",
+						data: [0, 0, 0, 0, 0, 0, 0]
+					}]
+				};
+
+      var ctx = document.getElementById("barChart").getContext("2d");
+      var eegBarChart = new Chart(ctx).Bar(data);
+
+      var attentionGauge = new JustGage({
+		    id: "attentionGauge",
+		    value: 0,
+		    min: 0,
+		    max: 100,
+		    title: "Attention Level"
+		  });
+
+		  var meditationGauge = new JustGage({
+		    id: "meditationGauge",
+		    value: 0,
+		    min: 0,
+		    max: 100,
+		    title: "Meditation Level"
+		  });
+
+      var video_id = window.yt_url;
+      var ampersandPosition = video_id.indexOf('=');
+      if(ampersandPosition != -1) {
+        video_id = video_id.substring(ampersandPosition+1, video_id.length);
+      }
+
+      var tag = document.createElement('script');
+
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+      var player;
+      function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+          height: '400',
+          width: '500',
+          videoId: video_id,
+          playerVars: { 'autoplay': 0, 'controls': 0 },
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }
+        });
+      }
+
+      function onPlayerReady(event) {
+        event.target.playVideo();
+        ticker = setInterval(tick, 50);
+      }
+
+      function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.ENDED) {
+        	clearInterval(ticker);
+        }
+      }
+      function stopVideo() {
+        player.stopVideo();
+      }
+
+      function tick() {
+        if (eegData[currentPointIndex].currentTime <= player.getCurrentTime()) {
+        	updateCharts(eegData[currentPointIndex]);
+        	currentPointIndex++;
+        }
+      }
+
+      function updateCharts(data) {
+      	for (var i = 0; i < 7; i++) {
+	  			eegBarChart.datasets[0].bars[i].value = data.eegPower[eegPowerKeys[i]];
+	  		}
+	  		eegBarChart.update();
+	  		attentionGauge.refresh(data.eSense.attention);
+	  		meditationGauge.refresh(data.eSense.meditation);
+      }
+
+
+    </script>
