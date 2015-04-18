@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
   def self.from_omniauth(auth)
 	  this_user = where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
 	    user.email = auth.info.email
-	    user.name = auth.info.name   # assuming the user model has a name      
+	    user.name = auth.info.name 
 	  end
     this_user.fb_token = auth.credentials.token
     this_user.save
@@ -40,7 +40,7 @@ class User < ActiveRecord::Base
 
   def get_photos
     facebook = Koala::Facebook::API.new(fb_token)
-    facebook.get_connections("me", "photos")
+    facebook.get_connections("me", "photos?limit=15&offset=#{rand(0..300)}").map{|i| i['images'][1]['source']}.shuffle
   end
 
 end

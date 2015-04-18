@@ -22,13 +22,41 @@
 //= require justgage
 //= require_tree .
 
-function ready() {
-    // Enable parsley js validation
-    $('form[data-validate="parsley"] .btn-primary').on('click', function(e) {
-        console.log('validate!')
-        $('form').parsley().validate();
-    });
-}
+var eegPowerKeys = ["delta", "theta", "lowAlpha", "highAlpha", "lowBeta", "highBeta", "lowGamma", "highGamma"];
 
-$(document).ready(ready)
-$(document).on('page:load', ready)
+function FacebookPhoto (id, url) {
+		this.id = id;
+		this.url = url;
+		this.eegData = [];
+		this.timeLeft = 10;
+		this.averages = [0, 0, 0, 0, 0, 0, 0, 0];
+		this.averageAttention = 0;
+		this.averageMeditation = 0;
+
+		this.calculateAverages = function () {
+			var totals = {"delta": 0, "theta": 0, "lowAlpha": 0, "highAlpha": 0, "lowBeta": 0, "highBeta": 0, "lowGamma": 0, "highGamma": 0, "attention": 0,"meditation": 0};
+			this.eegData.forEach(function(data) {
+				if (typeof data.eSense != 'undefined') {
+					totals['attention'] += data.eSense.attention;
+					totals['meditation'] += data.eSense.meditation;
+				}
+				if (typeof data.eegPower != 'undefined') {
+					eegPowerKeys.forEach(function(key) {
+						totals[key] += data.eegPower[key];
+					});
+				}
+			});
+
+			var divisor = this.eegData.length;
+
+			this.averageAttention = Math.round(totals['attention']/divisor);
+			this.averageMeditation = Math.round(totals['meditation']/divisor);
+			var i = 0;
+			var averages = []
+			eegPowerKeys.forEach(function(key) {
+				averages.push(Math.round(totals[key]/divisor));
+				i++;
+			});
+			this.averages = averages;
+		};
+}

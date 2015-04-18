@@ -1,0 +1,172 @@
+<%= javascript_tag do %>
+	window.photos = '<%= raw @photosString %>';
+<% end %>
+
+<div class="container">
+	<div class="row centerize" id="intro-div">
+		<h1>Rate Facebook Photos</h1>
+		<p>Find out what your brain waves look like when you're looking at embarassing photos you've uploaded to Facebook!</p>
+		
+		<div id="mindwave-warning" class="alert alert-warning" role="alert">
+			Please put on your Mindwave on start!
+		</div>
+		<a class="btn btn-primary btn-lg" id="rate-fb-start" >Start</a>
+	</div>
+
+	<div class="row centerize" id="rater-div">
+		<img id="photo-img" src=""/>
+	</div>
+
+	<div class="row" id="results-div" style="display:none;">
+		<div class="row centerize">
+			<h1>Results</h1>
+		</div>
+		<% @photos.each_with_index do |photo, index| %>
+		<div class="row result" id="<%= index %>">
+			<div class="row">
+				<%= image_tag photo, class: "fb-result-photo thumbnail" %>
+			</div>
+			<div class="row">
+				<div class="col-md-2">
+					<div id="attentionGauge-<%= index %>" class="200x160px"></div>
+				</div>
+
+				<div class="col-md-2">
+					<div id="meditationGauge-<%= index %>" class="200x160px"></div>
+				</div>
+
+				<div class="col-md-4">
+					<canvas id="eegRadarChart-<%= index %>" class="eegRadarChart" width="400" height="400"></canvas>
+				</div>
+				<div class="col-md-4">
+					<canvas id="eegBarChart-<%= index %>" width="400" height="400"></canvas>
+				</div>
+			</div>
+
+			<hr>
+		</div>
+			
+		<% end %>
+	</div>
+</div>
+
+<script>
+	$(document).ready(function(){
+
+		var DATA = {
+			labels: ["Delta", "Theta", "Low Alpha", "High Alpha", "Low Beta", "High Beta", "Low Gamma", "High Gamma"],
+			datasets: [{
+				label: "Mindwave Data Bar",
+				fillColor: "rgba(220,220,220,0.2)",
+				strokeColor: "rgba(220,220,220,1)",
+				pointColor: "rgba(220,220,220,1)",
+				pointStrokeColor: "#fff",
+				pointHighlightFill: "#fff",
+				pointHighlightStroke: "rgba(220,220,220,1)"
+			}]
+		};
+
+		var photosJSON = JSON.parse(window.photos);
+		// var numPhotos = photosJSON.length;
+		var numPhotos = 3;
+		var fbPhotos = [];
+		var currentPhotoIndex = 0;
+		var currentPhoto = null;
+
+		var ticker = null;
+
+		$('#rate-fb-start').on('click', function() {
+			$('#intro-div').hide()
+			$('#rater-div').show()
+			loadNextFbPhoto();
+			ticker = setInterval(tickRate, 1000);
+		})
+
+		function loadNextFbPhoto() {
+			if (currentPhoto != null) {
+				fbPhotos.push(currentPhoto);
+			}
+
+			if (currentPhotoIndex < numPhotos) {
+				var photo = photosJSON[currentPhotoIndex];
+				if (currentPhoto != null) {
+					$('#photo-img').hide();
+				}
+				currentPhoto = new FacebookPhoto(currentPhotoIndex, photo);
+				$('#photo-img').attr('src', photo);
+				$('#photo-img').show();
+
+				currentPhotoIndex++;	
+			} else {
+				clearInterval(ticker);
+				currentPhoto = null;
+				$('#rater-div').hide();
+				$('#results-div').show();
+				processResults();
+			}
+		}
+
+		function tickRate() {
+			currentPhoto.timeLeft = currentPhoto.timeLeft - 1;
+
+			if (currentPhoto.timeLeft == 0) {
+				loadNextFbPhoto()
+			}
+		}
+
+		function processResults() {
+			fbPhotos.forEach(function(fbP) {
+				fbP.calculateAverages();
+
+				var thisEegData = DATA;
+				thisEegData.datasets[0].data = fbP.averages;
+
+				var eegRadarChartCtx = document.getElementById("eegRadarChart-"+fbP.id).getContext("2d");
+				var eegRadarChart = new Chart(eegRadarChartCtx).Radar(thisEegData);
+				var eegBarChartCtx = document.getElementById("eegBarChart-"+fbP.id).getContext("2d");
+				var eegBarChart = new Chart(eegBarChartCtx).Bar(thisEegData);
+
+
+				var attentionGauge = new JustGage({
+			    id: "attentionGauge-"+fbP.id,
+			    value: fbP.averageAttention,
+			    min: 0,
+			    max: 100,
+			    title: "Attention Level"
+			  });
+
+			  var meditationGauge = new JustGage({
+			    id: "meditationGauge-"+fbP.id,
+			    value: fbP.averageMeditation,
+			    min: 0,
+			    max: 100,
+			    title: "Meditation Level"
+			  });
+			});
+		}
+
+		ws = new WebSocket("ws://localhost:8080");
+	  ws.onmessage = function(evt) { 
+
+	  	var data = JSON.parse(evt.data);
+	  	if (typeof data.poorSignalLevel != 'undefined') {
+	  		var strength = (200 - data.poorSignalLevel)/2;
+	  		if (strength == 0) {
+	  			$('#mindwave-warning').show();
+	  			$('#rate-fb-start').attr('disabled', true);
+	  		} else {
+	  			$('#mindwave-warning').hide();
+	  			$('#rate-fb-start').attr('disabled', false);
+
+	  			if (currentPhoto != null) {
+	  				currentPhoto.eegData.push(data);
+	  			}
+	  		}
+	  	}
+	  };
+	  ws.onclose = function() { console.log("socket closed"); };
+	  ws.onopen = function() {
+	    console.log("connected...");
+	  };
+	})
+</script>

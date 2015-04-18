@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_filter :authenticate_user!
-  after_action :verify_authorized
+  after_action :verify_authorized, :except => ['random_fb_photo']
 
   def index
     @users = User.all
