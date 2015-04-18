@@ -1,0 +1,119 @@
+<% if user_signed_in? %>
+
+<div class="container">
+
+	<div class="row centerize">
+		<h1>Mind Rate</h1>
+	</div> 
+
+	<div class="row">
+		<div class="col-md-4">
+			<div class="row">
+				<div id="signalPerformanceGauge" class="200x160px"></div>
+			</div>
+			<div class="row">
+				<div id="attentionGauge" class="200x160px"></div>
+			</div>
+			<div class="row">
+				<div id="meditationGauge" class="200x160px"></div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<canvas id="eegBarChart" width="400" height="400"></canvas>
+		</div>
+		<div class="col-md-4">
+			<canvas id="eegRadarChart" width="400" height="400"></canvas>
+		</div>
+	</div>
+
+	<div class="row centerize">
+		<a class="btn btn-primary btn-lg">Rate Facebook Photos</a>
+	</div>
+</div>
+
+<script>
+	$(document).ready(function(){
+
+		var eegPowerKeys = ["delta", "theta", "lowAlpha", "highAlpha", "lowBeta", "highBeta", "lowGamma", "highGamma"];
+
+		var eegBarChartCtx = document.getElementById("eegBarChart").getContext("2d");
+		var eegRadarChartCtx = document.getElementById("eegRadarChart").getContext("2d");
+
+		var data = {
+			labels: ["Delta", "Theta", "Low Alpha", "High Alpha", "Low Beta", "High Beta", "Low Gamma", "High Gamma"],
+			datasets: [{
+				label: "Mindwave Data Bar",
+				fillColor: "rgba(220,220,220,0.2)",
+				strokeColor: "rgba(220,220,220,1)",
+				pointColor: "rgba(220,220,220,1)",
+				pointStrokeColor: "#fff",
+				pointHighlightFill: "#fff",
+				pointHighlightStroke: "rgba(220,220,220,1)",
+				data: [0, 0, 0, 0, 0, 0, 0, 0]
+			}]
+		};
+
+		var eegBarChart = new Chart(eegBarChartCtx).Bar(data);
+		var eegRadarChart = new Chart(eegRadarChartCtx).Radar(data);
+
+		var signalGauge = new JustGage({
+	    id: "signalPerformanceGauge",
+	    value: 0,
+	    min: 0,
+	    max: 100,
+	    title: "Signal Strength"
+	  });
+
+	  var attentionGauge = new JustGage({
+	    id: "attentionGauge",
+	    value: 0,
+	    min: 0,
+	    max: 100,
+	    title: "Attention Level"
+	  });
+
+	  var meditationGauge = new JustGage({
+	    id: "meditationGauge",
+	    value: 0,
+	    min: 0,
+	    max: 100,
+	    title: "Meditation Level"
+	  });
+
+	  ws = new WebSocket("ws://localhost:8080");
+	  ws.onmessage = function(evt) { 
+
+	  	var data = JSON.parse(evt.data);
+
+	  	if (typeof data.poorSignalLevel != 'undefined') {
+	  		var strength = (200 - data.poorSignalLevel)/2;
+	  		signalGauge.refresh(strength);
+	  	}
+
+	  	if (typeof data.eSense != 'undefined') {
+	  		attentionGauge.refresh(data.eSense.attention);
+	  		meditationGauge.refresh(data.eSense.meditation);
+	  	}
+
+	  	if (typeof data.eegPower != 'undefined') {
+	  		for (var i = 0; i < 8; i++) {
+	  			eegBarChart.datasets[0].bars[i].value = data.eegPower[eegPowerKeys[i]];
+	  			eegRadarChart.datasets[0].points[i].value = data.eegPower[eegPowerKeys[i]];
+	  		}
+	  		eegBarChart.update();
+	  		eegRadarChart.update();
+	  	}
+
+	  	if (data.poorSignalLevel != 200) {
+
+	  	}
+
+
+	  };
+	  ws.onclose = function() { console.log("socket closed"); };
+	  ws.onopen = function() {
+	    console.log("connected...");
+	  };
+	});
+</script>
+<% end %>
