@@ -14,4 +14,6 @@ Rails.application.routes.draw do
 
   get 'youtube/:id', :to => 'rate#youtube_watch_and_record', :as => :yt_watch_and_record
   get 'youtube/replay/:id', :to => 'rate#youtube_replay', :as => :yt_replay
+
+  get 'blink', :to => 'rate#blink', :as => :blink
 end

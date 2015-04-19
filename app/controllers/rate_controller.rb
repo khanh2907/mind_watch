@@ -32,4 +32,8 @@ class RateController < ApplicationController
   def youtube_replay
     @youtube_video = YtVideo.find(params[:id])
   end
+
+  def blink
+    @new_blink = current_user.blinks.new
+  end
 end

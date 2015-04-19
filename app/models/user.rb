@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
   after_initialize :set_default_role, :if => :new_record?
 
   has_many :yt_videos
+  has_many :blinks
 
   def set_default_role
     self.role ||= :user
@@ -42,6 +43,6 @@ class User < ActiveRecord::Base
 
   def get_photos
     facebook = Koala::Facebook::API.new(fb_token)
-    facebook.get_connections("me", "photos?limit=5&offset=#{rand(0..300)}").map{|i| i['images'][1]['source']}.shuffle
+    facebook.get_connections("me", "photos?limit=3&offset=#{rand(0..300)}").map{|i| i['images'][1]['source']}.shuffle
   end
 end

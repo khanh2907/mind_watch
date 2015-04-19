@@ -20,6 +20,7 @@
 //= require Chart
 //= require raphael
 //= require justgage
+//= require flipclock.min
 //= require_tree .
 
 var eegPowerKeys = ["theta", "lowAlpha", "highAlpha", "lowBeta", "highBeta", "lowGamma", "highGamma"];
@@ -28,7 +29,7 @@ function FacebookPhoto (id, url) {
 		this.id = id;
 		this.url = url;
 		this.eegData = [];
-		this.timeLeft = 10;
+		this.timeLeft = 7;
 		this.averages = [0, 0, 0, 0, 0, 0, 0, 0];
 		this.averageAttention = 0;
 		this.averageMeditation = 0;

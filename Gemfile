@@ -25,6 +25,7 @@ gem 'em-websocket'
 gem 'chart-js-rails'
 gem 'justgage-rails'
 gem 'auto_html'
+gem 'flipclockjs-rails', '~> 0.5.5b.1'
 
 group :development do
   gem 'better_errors'

@@ -1,0 +1,42 @@
+<div class="container">
+	<div class="row centerize" id="header">
+		<h1>Mind Watch</h1>
+
+		<a class="btn btn-default" href="<%= root_path %>">MindWave Reader</a>
+		<a class="btn btn-default" href="<%= rate_facebook_photos_path %>">View Facebook Photos</a>
+		<a class="btn btn-default" href="<%= rate_youtube_path %>">Watch YouTube Video</a>
+		<a class="btn btn-default" href="<%= blink_path %>">Blink</a>
+
+		<hr>
+
+	</div>
+	<div class="row centerize" id="intro-div">
+		<h2>Blink Fast</h2>
+		<small>and look like an idiot...</small>
+		<div class="counter" style="margin-left: 44%;"></div>
+	</div>
+
+</div>
+
+
+<script>
+	$(document).ready(function(){
+		var counter = $('.counter').FlipClock(0, {
+			clockFace: 'Counter'
+		});
+
+		ws = new WebSocket("ws://localhost:8080");
+	  ws.onmessage = function(evt) { 
+
+	  	var data = JSON.parse(evt.data);
+
+	  	if (typeof data.blinkStrength != 'undefined') {
+	  		counter.increment();
+	  	}
+	  };
+	  ws.onclose = function() { console.log("socket closed"); };
+	  ws.onopen = function() {
+	    console.log("connected...");
+	  };
+	});
+</script>

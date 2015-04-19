@@ -1,0 +1,32 @@
+{u'status': u'scanning', u'poorSignalLevel': 200}
+{u'status': u'scanning', u'poorSignalLevel': 200}
+{u'status': u'scanning', u'poorSignalLevel': 200}
+{u'status': u'scanning', u'poorSignalLevel': 200}
+{u'status': u'scanning', u'poorSignalLevel': 200}
+{u'status': u'scanning', u'poorSignalLevel': 200}
+{u'status': u'scanning', u'poorSignalLevel': 200}
+{u'status': u'scanning', u'poorSignalLevel': 200}
+{u'status': u'scanning', u'poorSignalLevel': 200}
+{u'eegPower': {u'lowGamma': 0, u'highGamma': 2, u'highAlpha': 1, u'delta': 1, u'highBeta': 0, u'lowAlpha': 0, u'lowBeta': 0, u'theta': 2}, u'poorSignalLevel': 25, u'eSense': {u'meditation': 0, u'attention': 0}}
+{u'eegPower': {u'lowGamma': 619, u'highGamma': 276, u'highAlpha': 11021, u'delta': 202641, u'highBeta': 2758, u'lowAlpha': 6791, u'lowBeta': 7761, u'theta': 27150}, u'poorSignalLevel': 25, u'eSense': {u'meditation': 0, u'attention': 0}}
+{u'eegPower': {u'lowGamma': 152, u'highGamma': 6096, u'highAlpha': 6829, u'delta': 13712, u'highBeta': 3039, u'lowAlpha': 17364, u'lowBeta': 2659, u'theta': 29332}, u'poorSignalLevel': 0, u'eSense': {u'meditation': 0, u'attention': 0}}
+{u'blinkStrength': 43}
+{u'blinkStrength': 50}
+{u'eegPower': {u'lowGamma': 72902, u'highGamma': 138151, u'highAlpha': 474136, u'delta': 1813242, u'highBeta': 218663, u'lowAlpha': 620111, u'lowBeta': 165924, u'theta': 613570}, u'poorSignalLevel': 0, u'eSense': {u'meditation': 0, u'attention': 0}}
+{u'blinkStrength': 39}
+{u'blinkStrength': 55}
+{u'eegPower': {u'lowGamma': 6068, u'highGamma': 60035, u'highAlpha': 122855, u'delta': 1066172, u'highBeta': 22750, u'lowAlpha': 42132, u'lowBeta': 28402, u'theta': 174449}, u'poorSignalLevel': 0, u'eSense': {u'meditation': 0, u'attention': 0}}
+{u'blinkStrength': 37}
+{u'eegPower': {u'lowGamma': 21395, u'highGamma': 29839, u'highAlpha': 35916, u'delta': 477410, u'highBeta': 21371, u'lowAlpha': 33910, u'lowBeta': 20731, u'theta': 215687}, u'poorSignalLevel': 26, u'eSense': {u'meditation': 0, u'attention': 0}}
+{u'eegPower': {u'lowGamma': 19828, u'highGamma': 191652, u'highAlpha': 54195, u'delta': 646813, u'highBeta': 147542, u'lowAlpha': 531246, u'lowBeta': 114581, u'theta': 571625}, u'poorSignalLevel': 26, u'eSense': {u'meditation': 0, u'attention': 0}}
+{u'eegPower': {u'lowGamma': 12838, u'highGamma': 40063, u'highAlpha': 14386, u'delta': 64137, u'highBeta': 60301, u'lowAlpha': 184181, u'lowBeta': 36788, u'theta': 153562}, u'poorSignalLevel': 26, u'eSense': {u'meditation': 0, u'attention': 0}}
+{u'eegPower': {u'lowGamma': 31257, u'highGamma': 181551, u'highAlpha': 209829, u'delta': 311384, u'highBeta': 260441, u'lowAlpha': 651151, u'lowBeta': 64196, u'theta': 309751}, u'poorSignalLevel': 0, u'eSense': {u'meditation': 54, u'attention': 53}}
+{u'eegPower': {u'lowGamma': 10306, u'highGamma': 54107, u'highAlpha': 30861, u'delta': 109328, u'highBeta': 76272, u'lowAlpha': 97954, u'lowBeta': 18764, u'theta': 143610}, u'poorSignalLevel': 26, u'eSense': {u'meditation': 54, u'attention': 53}}
+{u'eegPower': {u'lowGamma': 133740, u'highGamma': 809670, u'highAlpha': 2020208, u'delta': 1144896, u'highBeta': 943521, u'lowAlpha': 431989, u'lowBeta': 294918, u'theta': 2086939}, u'poorSignalLevel': 26, u'eSense': {u'meditation': 54, u'attention': 53}}
+{u'eegPower': {u'lowGamma': 18920, u'highGamma': 283594, u'highAlpha': 209278, u'delta': 1112796, u'highBeta': 64142, u'lowAlpha': 188241, u'lowBeta': 81173, u'theta': 542709}, u'poorSignalLevel': 26, u'eSense': {u'meditation': 54, u'attention': 53}}
+{u'eegPower': {u'lowGamma': 22944, u'highGamma': 217934, u'highAlpha': 151140, u'delta': 782669, u'highBeta': 158401, u'lowAlpha': 303919, u'lowBeta': 40187, u'theta': 570550}, u'poorSignalLevel': 26, u'eSense': {u'meditation': 54, u'attention': 53}}
+{u'eegPower': {u'lowGamma': 53730, u'highGamma': 183942, u'highAlpha': 96238, u'delta': 1235813, u'highBeta': 215664, u'lowAlpha': 326707, u'lowBeta': 32631, u'theta': 444365}, u'poorSignalLevel': 26, u'eSense': {u'meditation': 54, u'attention': 53}}
+{u'eegPower': {u'lowGamma': 94689, u'highGamma': 75944, u'highAlpha': 21470, u'delta': 991420, u'highBeta': 144623, u'lowAlpha': 244864, u'lowBeta': 88690, u'theta': 460862}, u'poorSignalLevel': 26, u'eSense': {u'meditation': 54, u'attention': 53}}
+{u'eegPower': {u'lowGamma': 18628, u'highGamma': 212211, u'highAlpha': 141778, u'delta': 502938, u'highBeta': 147681, u'lowAlpha': 258088, u'lowBeta': 44351, u'theta': 629317}, u'poorSignalLevel': 0, u'eSense': {u'meditation': 38, u'attention': 61}}
+{u'eegPower': {u'lowGamma': 27162, u'highGamma': 168705, u'highAlpha': 103442, u'delta': 588697, u'highBeta': 251995, u'lowAlpha': 45301, u'lowBeta': 69334, u'theta': 512196}, u'poorSignalLevel': 0, u'eSense': {u'meditation': 20, u'attention': 83}}
+{u'eegPower': {u'lowGamma': 17599, u'highGamma': 206936, u'highAlpha': 25679, u'delta': 1583459, u'highBeta': 99858, u'lowAlpha': 241454, u'lowBeta': 33284, u'theta': 594883}, u'poorSignalLevel': 26, u'eSense': {u'meditation': 20, u'attention': 83}}
